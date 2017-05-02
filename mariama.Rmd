@@ -153,5 +153,7 @@ leaflet() %>%
   addMarkers(lng = -72.674573, lat = 42.449111,popup = "Potential Campsite # 1") %>%
    addPolylines(data = macleish_contours, weight = 1, color = "black") %>%
     addMarkers(lng = -72.681900, lat = 42.448831,popup = "Potential Campsite # 2")
+
+
 ```
 In white radius blue stream and black boundary. Not in brown buildings, purple research, yellow challenge courses. In all forest except the two forest types of the other two campsites
