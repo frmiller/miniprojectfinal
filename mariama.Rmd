@@ -138,7 +138,9 @@ leaflet() %>%
   addCircles(lat = 42.448013, lng = -72.680663, radius = 804.672,color="white") %>%
   addPolylines(data = macleish_contours, weight = 1, color = "black") %>%
   addPolylines(data = macleish_layers[["trails"]], weight = 3, color = "red") %>%
-  addCircleMarkers(data = trail_points, radius = 2, color = "red") 
+  addCircleMarkers(data = trail_points, radius = 2, color = "red") %>%
+  addMarkers(lng = -72.674573, lat = 42.449111,popup = "Potential Campsite # 1")%>%
+    addMarkers(lng = -72.681900, lat = 42.448831,popup = "Potential Campsite # 2")
 
 
 #intersect(color="blue","black","white") -- This doesn't seem to run on my computer. It gives me an error :
@@ -154,6 +156,9 @@ leaflet() %>%
   addPolygons(data = macleish_layers[["forests"]], 
               weight = 1, fillOpacity = 0.2, popup = ~ Sheet1__Na, color = "green") %>%
   addMarkers(lng = -72.674573, lat = 42.449111,popup = "Potential Campsite # 1") %>%
-   addPolylines(data = macleish_contours, weight = 1, color = "black")
+   addPolylines(data = macleish_contours, weight = 1, color = "black") %>%
+    addMarkers(lng = -72.681900, lat = 42.448831,popup = "Potential Campsite # 2")
+
+
 ```
 In white radius blue stream and black boundary. Not in brown buildings, purple research, yellow challenge courses. In all forest except the two forest types of the other two campsites
