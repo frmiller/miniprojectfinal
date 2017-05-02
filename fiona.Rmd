@@ -1,0 +1,100 @@
+---
+title: "Fiona"
+author: "Fiona Miller"
+date: "April 26, 2017"
+output: html_document
+---
+
+```{r, message = FALSE}
+url<-"http://wsgw.mass.gov/data/gispub/shape/contours5k/hp214.zip"
+download.file(url,destfile=basename(url))
+unzip("hp214.zip",exdir="northampton")
+library(macleish)
+library(leaflet)
+library(rgeos)
+library(sp)
+```
+
+```{r}
+## Buffer for stream (200 ft)
+proj4_aea <- "+proj=aea +lat_1=29.5 +lat_2=42.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"
+stream <- macleish_layers[["streams"]] %>%
+  spTransform(CRS(proj4_aea)) %>%
+  gBuffer(width = 60.96) %>%
+  spTransform("+init=epsg:4326")
+```
+
+```{r}
+## Buffer on Challenge courses (500 ft)
+challenge <- macleish_layers[["challenge_courses"]] %>%
+  spTransform(CRS(proj4_aea)) %>%
+  gBuffer(width = 152.4) %>%
+  spTransform("+init=epsg:4326")
+```
+
+```{r}
+## Buffer on research projects (500ft)
+research <- macleish_layers[["research"]] %>%
+  spTransform(CRS(proj4_aea)) %>%
+  gBuffer(width = 152.4) %>%
+  spTransform("+init=epsg:4326")
+```
+
+
+```{r}
+names(macleish_layers)
+```
+
+```{r}
+##Plotting all the buffers.
+plot(stream)
+plot(challenge)
+plot(research)
+```
+
+
+
+Connect to Macleish data
+
+```{r}
+library(dplyr)
+library(rgdal)
+library(rgeos)
+library(macleish)
+#Get contours for Whately & Conway
+```
+
+# Download terrain data for Whatley
+```{r}
+url <- "http://wsgw.mass.gov/data/gispub/shape/contours5k/hp337.zip"
+download.file(url, destfile = basename(url))
+unzip("hp337.zip", exdir = "whately_contours")
+```
+
+# Load and transform
+```{r}
+whately_GIS_data <- path.expand("whately_contours")
+whately_contours <- readOGR(whately_GIS_data, "hp337") %>%
+  spTransform(CRS("+init=epsg:4326"))
+# Download terrain data for Conway
+url <- "http://wsgw.mass.gov/data/gispub/shape/contours5k/hp68.zip"
+download.file(url, destfile = basename(url))
+unzip("hp68.zip", exdir = "conway_contours")
+```
+
+# Load and transform
+```{r}
+conway_GIS_data <- path.expand("conway_contours")
+conway_contours <- readOGR(conway_GIS_data, "hp68") %>%
+  spTransform(CRS("+init=epsg:4326"))
+# Merge the contours for both towns, then intersect with the boundary of Macleish
+macleish_contours <-
+  gUnion(conway_contours, whately_contours) %>%
+  gIntersection(macleish_layers[['boundary']])
+# They're huuuuuge, so let's delete the rest 
+# of the contours now that we have what we want
+remove(whately_contours, conway_contours)
+```
+# What happens when you intersect lines?
+trail_points <- macleish_contours %>%
+  gIntersection(macleish_layers[['trails']])
