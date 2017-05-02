@@ -1,0 +1,60 @@
+---
+title: "Ideas"
+author: "Fiona Miller"
+date: "April 26, 2017"
+output: html_document
+---
+
+
+Just over a half-mile radius....
+
+MacLeish currently has two campsites - one large group site closer to the building and one remote campsite with two tent platforms about one mile from the parking area. We would like to develop one additional campsite that is approximately half a mile walk from the parking area, within 200’ of a stream or other source of water, in forest that is unlike the forest in the two other campsites, relatively flat, and at least 500’ from any research area or any element of the Challenge Course. Propose two new campsite locations for our consideration.
+Supporting data includes:
+Existing trails shapefile
+10’ contour elevation data
+vegetation type shapefile
+hydrology (streams, wetlands, etc.) shapefile
+Research locations shapefile
+Challenge course element locations shapefile
+Property Boundary shapefile
+
+```{r, message = FALSE}
+url<-"http://wsgw.mass.gov/data/gispub/shape/contours5k/hp214.zip"
+download.file(url,destfile=basename(url))
+unzip("hp214.zip",exdir="northampton")
+```
+
+## COORDINATES FOR NEEDED PLACES
+
+Group Campsite (42.450976, -72.678154)
+Remote Campite (42.458570, -72.674732)
+Parking (42.448013, -72.680663)
+Weather Station OrchardMet (42.449653, -72.680315)
+Weather Station WhatelyMet (42.448470, -72.680553)
+
+Rubric
+
+To get full credit for this Mini-Project, you must earn 10 points out of the following 12:
+
+Baseline
+
++1 for having an .Rmd that compiles without errors
++1 for including a problem statement (what are you trying to figure out?)
++1 for readable, well-documented code (i.e. appropriate comments, using line breaks, breaking code up into logical chunks)
++1 unnecessary messages from R are hidden from being displayed in the HTML
++1 for creating a leaflet map
+Average
+
++1 for using an appropriate visual mapping (incl. choice of points/lines/polygons, as well as colors and/or icons, etc.)
++1 for providing a clear, concise description of the data you used
++1 for using more than one data source from the macleish package in your analysis (e.g. both vegetation and elevation data)
++1 for including relevant external information in your analysis
++1 for reporting at least one actionable recommendation (what should Smith DO with your findings?)
+Advanced
+
++1 for including a short discussion on the resources necessary to implement your recommendation:
+what will it cost?
+how long will it take?
+are there any concerns about environmental impact?
+do you see any major roadblocks?
++1 WOW factor: awarded at the professors’ discretion for submissions that are exceptionally compelling
