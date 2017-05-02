@@ -4,6 +4,8 @@ author: "Mariama Jaiteh, Fiona Miller, Starry Zhou"
 date: "4/26/2017"
 output: html_document
 ---
+Problem Statement: 
+
 ```{r}
 #Load Libraries!
 library(sp)
@@ -127,4 +129,38 @@ leaflet() %>%
    addPolylines(data = macleish_contours, weight = 1, color = "black") %>%
     addMarkers(lng = -72.681900, lat = 42.448831,popup = "Potential Campsite # 2")
 ```
+
+Fiona
+
+
+
+
+
+
+
+
+
+
+
+Mariama 
+
+
+
+
+
+
+
+
+
+
+Starry
+
+
+
+
+
+
+
+
+
 
