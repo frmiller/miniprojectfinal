@@ -1,0 +1,156 @@
+---
+title: "Starry"
+author: "starry"
+date: "4/26/2017"
+output: html_document
+---
+```{r}
+#Load Libraries!
+library(sp)
+library(macleish)
+library(tidyverse)
+library(rgeos)
+library(rgdal)
+```
+# Load 10'contour elevation data
+```{r}
+url <- "http://wsgw.mass.gov/data/gispub/shape/contours5k/hp214.zip"
+download.file(url, destfile = basename(url))
+unzip("hp214.zip", exdir = "contours")
+dsn <- path.expand("contours")
+```
+#Store elevation as SPH and Store as data frame
+```{r}
+m_contours <- readOGR(dsn, "hp214")
+m_contours_data <- m_contours %>%
+  as.data.frame()
+```
+```{r}
+m_contours_el <- spTransform(m_contours,   
+                             proj4string(macleish_layers[["boundary"]]))
+```
+# Macleish Eleavation
+```{r}
+##We only want the Macleish elevation data
+mac_elevation <- gIntersects(macleish_layers[["boundary"]], m_contours_el)
+```
+#Campsites
+```{r}
+sites = data.frame( name = c("Group Campsite","Remote Campsite","Parking"), lat = c(42.450976,42.458570,42.448013),long = c(-72.678154,-72.674732,-72.680663))
+```
+#plot
+```{r}
+leaflet() %>%
+  addTiles() %>%
+  addPolygons(data = macleish_layers[["buildings"]]) %>%
+  addMarkers(lng = ~long, lat = ~lat, data = sites,
+    popup = ~name)
+  
+  
+```
+# Buffer
+```{r}
+## Buffer for stream (200 ft)
+proj4_aea <- "+proj=aea +lat_1=29.5 +lat_2=42.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"
+stream <- macleish_layers[["streams"]] %>%
+  spTransform(CRS(proj4_aea)) %>%
+  gBuffer(width = 60.96) %>%
+  spTransform("+init=epsg:4326")
+```
+```{r}
+## Buffer on Challenge courses (500 ft)
+challenge <- macleish_layers[["challenge_courses"]] %>%
+  spTransform(CRS(proj4_aea)) %>%
+  gBuffer(width = 152.4) %>%
+  spTransform("+init=epsg:4326")
+```
+```{r}
+## Buffer on research projects (500ft)
+research <- macleish_layers[["research"]] %>%
+  spTransform(CRS(proj4_aea)) %>%
+  gBuffer(width = 152.4) %>%
+  spTransform("+init=epsg:4326")
+```
+```{r}
+boundaries_aea <- macleish_layers[["boundary"]] %>%
+  spTransform(CRS(proj4_aea))
+```
+#plot
+```{r}
+library(leaflet)
+leaflet() %>%
+  addTiles() %>%
+  addPolylines(data = macleish_layers[["streams"]], 
+               weight = 1, color = "black") %>%
+  addPolygons(data = stream) 
+```
+```{r}
+leaflet() %>%
+  addTiles() %>%
+  addPolygons(data = macleish_layers[["buildings"]], 
+              weight = 1, popup = ~ name) %>%
+  addPolygons(data = macleish_layers[["forests"]], 
+              weight = 1, fillOpacity = 0.2, popup = ~ Sheet1__Na) %>%
+  addMarkers(lng = ~long, lat = ~lat, data = sites,
+    popup = ~name) %>%
+  addPolygons(data = challenge) 
+```
+```{r}
+## blue, black and white
+leaflet() %>%
+  addTiles() %>%
+  addPolygons(data = macleish_layers[["buildings"]], 
+              weight = 1, popup = ~ name, color = "brown") %>%
+  addPolygons(data = macleish_layers[["forests"]], 
+              weight = 1, fillOpacity = 0.2, popup = ~ Sheet1__Na, color = "green") %>%
+  addMarkers(lng = ~long, lat = ~lat, data = sites,
+    popup = ~name)  %>%
+  addPolygons(data = stream, color = "blue") %>%
+  addPolygons(data = research, color = "purple") %>%
+  addPolygons(data = macleish_layers[["boundary"]], color = "black") %>%
+  addPolygons(data = challenge, color = "yellow") %>%
+  addCircles(lat = 42.448013, lng = -72.680663, radius = 804.672,color="white")
+```
+rightest, vermal pool sedge meadow
+```{r}
+leaflet() %>%
+  addTiles() %>%
+    addMarkers(lng = ~long, lat = ~lat, data = sites,
+    popup = ~name) %>%
+  addPolygons(data = macleish_layers[["forests"]], 
+              weight = 1, fillOpacity = 0.2, popup = ~ Sheet1__Na, color = "green") 
+```
+  
+  
+```{R}
+library(rgeos)
+```
+```{r}
+gIntersection(polyblue, polyblack, unaryUnion_if_byid_false=FALSE)
+```
+```{R}
+polyblack<-leaflet() %>%
+  addTiles() %>%
+  addMarkers(lng = ~long, lat = ~lat, data = sites,
+    popup = ~name)  %>%
+  addPolygons(data = macleish_layers[["boundary"]], color = "black") 
+threecolors<-intersect(bluewhite,polyblack)
+```
+```{r}
+polypurple<-leaflet() %>%
+  addTiles() %>%
+ addMarkers(lng = ~long, lat = ~lat, data = sites,
+    popup = ~name)  %>%
+  addPolygons(data = research, color = "purple")
+polyyellow<-leaflet() %>%
+  addTiles() %>%
+   addMarkers(lng = ~long, lat = ~lat, data = sites,
+    popup = ~name)  %>%
+  addPolygons(data = challenge, color = "yellow") 
+exclude<-union(polypurple,polyyellow)
+```
+```{r}
+range<-setdiff(exclude,threecolors)
+range
+```
+In white radius blue stream and black boundary. Not in buildings, research, challenge courses. In all forest except the two forest types of the other two campsites (Old Field White Pine Forest, Old Field White Pine Forest)
