@@ -1,0 +1,74 @@
+---
+title: "Edits"
+author: "Mariama Jaiteh"
+date: "4/26/2017"
+output: html_document
+---
+
+```{r}
+#Load Libraries!
+library(sp)
+library(macleish)
+library(tidyverse)
+library(rgeos)
+library(rgdal)
+
+
+```
+# Load 10'contour elevation data
+```{r}
+url <- "http://wsgw.mass.gov/data/gispub/shape/contours5k/hp214.zip"
+download.file(url, destfile = basename(url))
+unzip("hp214.zip", exdir = "contours")
+dsn <- path.expand("contours")
+
+```
+#Store elevation SPH and Store as data frame
+```{r}
+m_contours <- readOGR(dsn, "hp214")
+m_contours_data <- m_contours %>%
+  as.data.frame()
+```
+#Load and change campsite/parking data (in  CSV) into a shape file
+```{r}
+camp <- read_csv("~/Desktop/camp.csv")
+coordinates(camp)<-~Longitude+Latitude # whatever the equivalent is in your 
+#plot(camp)
+proj4string(camp) = CRS("+init=epsg:4326")
+plot(camp,col="red")
+```
+#Change the projections (to match one another)
+```{r}
+camp <- spTransform(camp, proj4string(macleish_layers[["boundary"]]))
+m_contours <- spTransform(m_contours,proj4string(macleish_layers[["boundary"]]) )
+#Test out to see if they have the same projects..
+proj4string(camp)
+proj4string(m_contours)
+
+```
+## Just plotting the data that we are going to work with..
+```{r}
+##Just plotting all the datasets we need to use to see how they look.
+plot(macleish_layers[["trails"]],col="blue")
+plot(macleish_layers[["boundary"]],add = TRUE)
+plot(macleish_layers[["buildings"]],add=TRUE)
+plot(macleish_layers[["research"]],add=TRUE,col="pink")
+plot(macleish_layers[["wetlands"]],add=TRUE,col="red")
+#plot(macleish_layers[["challenge_courses"]],add=TRUE,col="purple")
+plot(macleish_layers[["streams"]],add=TRUE,col="orange")
+
+
+```
+# Macleish Eleavation
+```{r}
+##We only want the Macleish elevation data
+mac_elevation <- gIntersection(macleish_layers[["boundary"]], m_contours)
+
+```
+#plot campsites
+```{r}
+plot(camp,col="red")
+```
+#plot Elevation
+```{r}
+plot(m_contours)```
