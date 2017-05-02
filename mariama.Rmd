@@ -141,11 +141,6 @@ leaflet() %>%
   addCircleMarkers(data = trail_points, radius = 2, color = "red") %>%
   addMarkers(lng = -72.674573, lat = 42.449111,popup = "Potential Campsite # 1")%>%
     addMarkers(lng = -72.681900, lat = 42.448831,popup = "Potential Campsite # 2")
-
-
-#intersect(color="blue","black","white") -- This doesn't seem to run on my computer. It gives me an error :
-#Error in intersect(color = "blue", "black", "white") : 
-  #unused argument (color = "blue")
 ```
 
 ```{r}
