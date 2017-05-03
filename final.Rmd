@@ -1,9 +1,11 @@
 ---
-title: "mariama"
+title: "Proposal for New Campsites"
 author: "Mariama Jaiteh, Fiona Miller, Starry Zhou"
 date: "4/26/2017"
 output: html_document
 ---
+Problem Statement: 
+
 ```{r}
 #Load Libraries!
 library(sp)
@@ -58,12 +60,10 @@ remove(whately_contours, conway_contours)
 trail_points <- macleish_contours %>%
   gIntersection(macleish_layers[['trails']])
 ```
-
 # Campsites
 ```{r}
 sites = data.frame( name = c("Group Campsite","Remote Campsite","Parking"), lat = c(42.450976,42.458570,42.448013),long = c(-72.678154,-72.674732,-72.680663))
 ```
-
 # Buffer
 ```{r}
 ## Buffer for stream (200 ft)
@@ -95,32 +95,7 @@ research <- macleish_layers[["research"]] %>%
 boundaries_aea <- macleish_layers[["boundary"]] %>%
   spTransform(CRS(proj4_aea))
 ```
-
-# plot
-```{r}
-#Plotting the streams --not needed after everything is finished.
-leaflet() %>%
-  addTiles() %>%
-  addPolylines(data = macleish_layers[["streams"]], 
-               weight = 1, color = "black") %>%
-  addPolygons(data = stream) 
-
-```
-
-```{r}
-## Use as a reference for Forest type.
-leaflet() %>%
-  addTiles() %>%
-  addPolygons(data = macleish_layers[["buildings"]], 
-              weight = 1, popup = ~ name) %>%
-  addPolygons(data = macleish_layers[["forests"]], 
-              weight = 1, fillOpacity = 0.2, popup = ~ Sheet1__Na) %>%
-  addMarkers(lng = ~long, lat = ~lat, data = sites,
-    popup = ~name) %>%
-  addPolygons(data = challenge) 
-
-```
-
+# Plot map
 ```{r}
 ## blue, black and white
 leaflet() %>%
@@ -153,7 +128,39 @@ leaflet() %>%
   addMarkers(lng = -72.674573, lat = 42.449111,popup = "Potential Campsite # 1") %>%
    addPolylines(data = macleish_contours, weight = 1, color = "black") %>%
     addMarkers(lng = -72.681900, lat = 42.448831,popup = "Potential Campsite # 2")
-
-
 ```
-In white radius blue stream and black boundary. Not in brown buildings, purple research, yellow challenge courses. In all forest except the two forest types of the other two campsites
+
+Fiona
+
+
+
+
+
+
+
+
+
+
+
+Mariama 
+
+
+
+
+
+
+
+
+
+
+Starry
+
+
+
+
+
+
+
+
+
+
