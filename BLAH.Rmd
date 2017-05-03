@@ -138,7 +138,7 @@ leaflet() %>%
   addCircleMarkers(data = trail_points, radius = 2, color = "red") 
 ```
 ## rightest, vermal pool sedge meadow
-```{r} 
+```{r}  
 leaflet() %>%
   addTiles() %>%
     addMarkers(lng = ~long, lat = ~lat, data = sites,
