@@ -130,11 +130,8 @@ leaflet() %>%
     addMarkers(lng = -72.681900, lat = 42.448831,popup = "Potential Campsite # 2")
 ```
 
-Fiona
 
-
-
-
+We used data from the macleish package, specifically, the forests, boundary, buildings, trails, streams, research, and challenge courses data. We also used the elevation data provided by Massachusetts government for Whatley and Conway.
 
 
 
