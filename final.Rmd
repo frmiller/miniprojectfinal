@@ -6,7 +6,7 @@ output: html_document
 ---
 Problem Statement: 
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 #Load Libraries!
 library(sp)
 library(macleish)
@@ -18,7 +18,7 @@ library(leaflet)
 
 ```
 # 10’ contour elevation data
-```{r}
+```{r, message=FALSE}
 # Download terrain data for Whatley
 url <- "http://wsgw.mass.gov/data/gispub/shape/contours5k/hp337.zip"
 download.file(url, destfile = basename(url))
@@ -31,7 +31,7 @@ whately_contours <- readOGR(whately_GIS_data, "hp337") %>%
 
 ```
 
-```{r}
+```{r, message=FALSE}
 # Download terrain data for Conway
 url <- "http://wsgw.mass.gov/data/gispub/shape/contours5k/hp68.zip"
 download.file(url, destfile = basename(url))
@@ -43,7 +43,7 @@ conway_contours <- readOGR(conway_GIS_data, "hp68") %>%
   spTransform(CRS("+init=epsg:4326"))
 ```
 
-```{r}
+```{r, message=FALSE}
 # Merge the contours for both towns, then intersect with the boundary of Macleish
 macleish_contours <-
   gUnion(conway_contours, whately_contours) %>%
@@ -52,7 +52,7 @@ remove(whately_contours, conway_contours)
 
 ```
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 # intersect lines
 trail_points <- macleish_contours %>%
   gIntersection(macleish_layers[['trails']])
