@@ -48,20 +48,18 @@ conway_contours <- readOGR(conway_GIS_data, "hp68") %>%
 macleish_contours <-
   gUnion(conway_contours, whately_contours) %>%
   gIntersection(macleish_layers[['boundary']])
-
-# They're huuuuuge, so let's delete the rest 
-# of the contours now that we have what we want
 remove(whately_contours, conway_contours)
 
 ```
 
 ```{r}
-# What happens when you intersect lines?
+# intersect lines
 trail_points <- macleish_contours %>%
   gIntersection(macleish_layers[['trails']])
 ```
 # Campsites
 ```{r}
+#create data.frame for campsites and parking points
 sites = data.frame( name = c("Group Campsite","Remote Campsite","Parking"), lat = c(42.450976,42.458570,42.448013),long = c(-72.678154,-72.674732,-72.680663))
 ```
 # Buffer
@@ -92,12 +90,13 @@ research <- macleish_layers[["research"]] %>%
 ```
 
 ```{r}
+#transform to aea
 boundaries_aea <- macleish_layers[["boundary"]] %>%
   spTransform(CRS(proj4_aea))
 ```
 # Plot map
 ```{r}
-## blue, black and white
+## plot map with all information
 leaflet() %>%
   addTiles() %>%
   addPolygons(data = macleish_layers[["buildings"]], 
@@ -119,6 +118,7 @@ leaflet() %>%
 ```
 
 ```{r}
+#map with less information, just markers and forest
 leaflet() %>%
   addTiles() %>%
     addMarkers(lng = ~long, lat = ~lat, data = sites,
