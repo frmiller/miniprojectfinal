@@ -133,6 +133,9 @@ leaflet() %>%
 ## Data Used:
 We used data from the macleish package, specifically, the forests, boundary, buildings, trails, streams, research, and challenge courses data. We also used the elevation data provided by Massachusetts government for Whatley and Conway.To draw the map and to determine where we were going to place the new campsites, we decided to plot all the layers and buffers that we had but we put different colors for each. From this we were able to tell in which areas we can put the campsites.
 
+## What we Found:
+Two potential campistes for MacLeish Field Station. Potential campsite #1 is located at 42.449111, -72.674573 in the vegetation type Vernal Pool Sedge Meadow, and Potential Campsite #2 is located at 42.454397,-72.685897 in the vegetation type Red Oak.
+
 ## Actionable recommedations:
 Now that we have identified the two potential campsites,I think the best thing Smith should do is to scope out the area, we know that the campsites meets the requirements listed in the problem description but we're not quite sure if it violates any laws and rules. I know that there is a potential that the new potential campsites are areas where there are endangered species. 
 
