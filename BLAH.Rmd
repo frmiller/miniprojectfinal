@@ -45,7 +45,6 @@ macleish_contours <-
   gUnion(conway_contours, whately_contours) %>%
   gIntersection(macleish_layers[['boundary']])
 remove(whately_contours, conway_contours)
-
 ```
 
 ```{r}
