@@ -127,7 +127,6 @@ leaflet() %>%
   addPolygons(data = macleish_layers[["forests"]], 
               weight = 1, fillOpacity = 0.2, popup = ~ Sheet1__Na, color = "green") %>%
   addMarkers(lng = -72.674573, lat = 42.449111,popup = "Potential Campsite # 1") %>%
-   addPolylines(data = macleish_contours, weight = 1, color = "black") %>%
     addMarkers(lng = -72.685897, lat = 42.454397,popup = "Potential Campsite # 2")
 ```
 
